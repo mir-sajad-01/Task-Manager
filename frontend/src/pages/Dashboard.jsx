@@ -24,6 +24,11 @@ function Dashboard() {
     setTitle("");
   };
 
+  const deleteTask = async (id) =>{
+      await axios.delete(`http://localhost:5000/tasks/${id}`);
+      setTasks(tasks.filter(task=>task._id!==id));
+  }
+
   return (
     <div>
       <h1>Task Manager</h1>
@@ -38,7 +43,9 @@ function Dashboard() {
 
       <ul>
         {tasks.map(task => (
-          <li key={task._id}>{task.title}</li>
+          <li key={task._id}>{task.title}
+          <button onClick ={()=>deleteTask(task._id)}>Delete</button>
+          </li>
         ))}
       </ul>
     </div>
