@@ -4,9 +4,11 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
+const taskRoutes = require("./routes/taskRoutes");
 
 app.use(cors());
 app.use(express.json());
+app.use("/tasks",taskRoutes);
 
 
 
