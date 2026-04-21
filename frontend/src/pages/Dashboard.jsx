@@ -4,6 +4,7 @@ import axios from "axios";
 function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
+  const [filter, setFilter] = useState("all");
 
   // Fetch tasks
   useEffect(() => {
@@ -42,6 +43,12 @@ function Dashboard() {
     ));
   };
 
+  const filteredTasks = tasks.filter(task => {
+    if (filter === "completed") return task.completed;
+    if (filter === "pending") return !task.completed;
+    return true;
+  })
+
   return (
     <div>
       <h1>Task Manager</h1>
@@ -53,9 +60,11 @@ function Dashboard() {
       />
 
       <button onClick={addTask}>Add</button>
-
+      <button onClick={() => setFilter("all")}>All</button>
+      <button onClick={() => setFilter("completed")}>Completed</button>
+      <button onClick={() => setFilter("pending")}>Pending</button>
       <ul>
-        {tasks.map(task => (
+        {filteredTasks.map(task => (
           <li key={task._id}>
             <span
               style={{
