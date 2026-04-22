@@ -12,7 +12,7 @@ function Login() {
         password
       });
 
-      localStorage.setItem("token", res.data.token);
+     localStorage.setItem("token", `Bearer ${res.data.token}`);
 
       alert("Login successful");
 
@@ -60,6 +60,8 @@ function Login() {
         </p>
       </div>
     </div>
+
+
   );
 }
 

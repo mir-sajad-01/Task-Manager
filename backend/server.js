@@ -15,7 +15,8 @@ app.use("/auth",authRoutes);
 
 
 mongoose.connect(process.env.MONGO_URL)
-  .then(() => console.log("DB Connected"))
+  .then(() => {
+    console.log("DB Connected");
+    app.listen(5000, () => console.log("Server running on port 5000"));
+  })
   .catch(err => console.log(err));
-
- app.listen(5000,()=> console.log("Server running on port 5000"));
