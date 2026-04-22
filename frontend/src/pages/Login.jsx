@@ -6,15 +6,22 @@ function Login() {
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    const res = await axios.post("http://localhost:5000/auth/login", {
-      email,
-      password
-    });
+    try {
+      const res = await axios.post("http://localhost:5000/auth/login", {
+        email,
+        password
+      });
 
-    // ✅ NOW use localStorage
-    localStorage.setItem("token", res.data.token);
+      localStorage.setItem("token", res.data.token);
 
-    alert("Login successful");
+      alert("Login successful");
+
+      // ✅ REDIRECT HERE
+      window.location.href = "/dashboard";
+
+    } catch (err) {
+      alert(err.response?.data?.message || "Login failed");
+    }
   };
 
   return (
@@ -33,6 +40,12 @@ function Login() {
       />
 
       <button onClick={handleLogin}>Login</button>
+      <p>
+        Don't have an account?
+        <button onClick={() => window.location.href = "/signup"}>
+          Signup
+        </button>
+      </p>
     </div>
   );
 }

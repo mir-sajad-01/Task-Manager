@@ -6,12 +6,20 @@ function Signup() {
   const [password, setPassword] = useState("");
 
   const handleSignup = async () => {
-    await axios.post("http://localhost:5000/auth/signup", {
-      email,
-      password
-    });
+    try {
+      await axios.post("http://localhost:5000/auth/signup", {
+        email,
+        password
+      });
 
-    alert("User created");
+      alert("User created");
+
+      // ✅ REDIRECT HERE
+      window.location.href = "/login";
+
+    } catch (err) {
+      alert(err.response?.data?.message || "Signup failed");
+    }
   };
 
   return (
@@ -30,6 +38,12 @@ function Signup() {
       />
 
       <button onClick={handleSignup}>Signup</button>
+      <p>
+        Already have an account?
+        <button onClick={() => window.location.href = "/login"}>
+          Login
+        </button>
+      </p>
     </div>
   );
 }

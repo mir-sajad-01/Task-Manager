@@ -5,21 +5,31 @@ function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
   const [filter, setFilter] = useState("all");
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/login";
+    }
+  }, []);
 
   // Fetch tasks
   useEffect(() => {
-    axios.get("http://localhost:5000/tasks")
+    axios.get("http://localhost:5000/tasks", {
+      headers: { Authorization: token }
+    })
       .then(res => setTasks(res.data))
       .catch(err => console.log(err));
   }, []);
+
 
   // Add task
   const addTask = async () => {
     if (!title) return;
 
-    const res = await axios.post("http://localhost:5000/tasks", {
-      title
-    });
+    const res = await axios.post("http://localhost:5000/tasks",
+      { title }, { headers: { Authorization: token } }
+    );
 
     setTasks([...tasks, res.data]);
     setTitle("");
@@ -27,7 +37,8 @@ function Dashboard() {
 
   // Delete task
   const deleteTask = async (id) => {
-    await axios.delete(`http://localhost:5000/tasks/${id}`);
+    await axios.delete(`http://localhost:5000/tasks/${id}`,
+      { headers: { Authorization: token } });
     setTasks(tasks.filter(task => task._id !== id));
   };
 
@@ -35,7 +46,8 @@ function Dashboard() {
   const toggleComplete = async (task) => {
     const res = await axios.put(
       `http://localhost:5000/tasks/${task._id}`,
-      { completed: !task.completed }
+      { completed: !task.completed },
+      { headers: { Authorization: token } }
     );
 
     setTasks(tasks.map(t =>
