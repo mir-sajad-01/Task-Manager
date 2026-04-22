@@ -5,44 +5,42 @@ function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
   const [filter, setFilter] = useState("all");
+
   const token = localStorage.getItem("token");
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (!token) {
       window.location.href = "/login";
     }
-  }, []);
 
-  // Fetch tasks
-  useEffect(() => {
     axios.get("http://localhost:5000/tasks", {
       headers: { Authorization: token }
     })
-      .then(res => setTasks(res.data))
-      .catch(err => console.log(err));
+      .then(res => setTasks(res.data));
   }, []);
 
-
-  // Add task
   const addTask = async () => {
     if (!title) return;
 
-    const res = await axios.post("http://localhost:5000/tasks",
-      { title }, { headers: { Authorization: token } }
+    const res = await axios.post(
+      "http://localhost:5000/tasks",
+      { title },
+      { headers: { Authorization: token } }
     );
 
     setTasks([...tasks, res.data]);
     setTitle("");
   };
 
-  // Delete task
   const deleteTask = async (id) => {
-    await axios.delete(`http://localhost:5000/tasks/${id}`,
-      { headers: { Authorization: token } });
-    setTasks(tasks.filter(task => task._id !== id));
+    await axios.delete(
+      `http://localhost:5000/tasks/${id}`,
+      { headers: { Authorization: token } }
+    );
+
+    setTasks(tasks.filter(t => t._id !== id));
   };
 
-  // Toggle complete
   const toggleComplete = async (task) => {
     const res = await axios.put(
       `http://localhost:5000/tasks/${task._id}`,
@@ -55,47 +53,79 @@ function Dashboard() {
     ));
   };
 
-  const filteredTasks = tasks.filter(task => {
-    if (filter === "completed") return task.completed;
-    if (filter === "pending") return !task.completed;
+  const filteredTasks = tasks.filter(t => {
+    if (filter === "completed") return t.completed;
+    if (filter === "pending") return !t.completed;
     return true;
-  })
+  });
 
   return (
-    <div>
-      <h1>Task Manager</h1>
+    <div className="min-h-screen bg-gray-100 p-6">
 
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Enter task"
-      />
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Task Manager</h1>
+        <button
+          onClick={() => {
+            localStorage.removeItem("token");
+            window.location.href = "/login";
+          }}
+          className="bg-red-500 text-white px-4 py-2 rounded-lg"
+        >
+          Logout
+        </button>
+      </div>
 
-      <button onClick={addTask}>Add</button>
-      <button onClick={() => setFilter("all")}>All</button>
-      <button onClick={() => setFilter("completed")}>Completed</button>
-      <button onClick={() => setFilter("pending")}>Pending</button>
-      <ul>
+      {/* Add Task */}
+      <div className="flex gap-2 mb-4">
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="flex-1 p-2 border rounded-lg"
+          placeholder="Enter task..."
+        />
+        <button
+          onClick={addTask}
+          className="bg-blue-500 text-white px-4 rounded-lg"
+        >
+          Add
+        </button>
+      </div>
+
+      {/* Filters */}
+      <div className="flex gap-2 mb-4">
+        <button onClick={() => setFilter("all")} className="px-3 py-1 bg-gray-300 rounded">All</button>
+        <button onClick={() => setFilter("completed")} className="px-3 py-1 bg-green-400 rounded">Completed</button>
+        <button onClick={() => setFilter("pending")} className="px-3 py-1 bg-yellow-400 rounded">Pending</button>
+      </div>
+
+      {/* Task List */}
+      <div className="bg-white p-4 rounded-xl shadow">
         {filteredTasks.map(task => (
-          <li key={task._id}>
-            <span
-              style={{
-                textDecoration: task.completed ? "line-through" : "none"
-              }}
-            >
+          <div key={task._id} className="flex justify-between items-center border-b py-2">
+            <span className={task.completed ? "line-through text-gray-400" : ""}>
               {task.title}
             </span>
 
-            <button onClick={() => toggleComplete(task)}>
-              {task.completed ? "Undo" : "Complete"}
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => toggleComplete(task)}
+                className="bg-green-500 text-white px-2 rounded"
+              >
+                {task.completed ? "Undo" : "Done"}
+              </button>
 
-            <button onClick={() => deleteTask(task._id)}>
-              Delete
-            </button>
-          </li>
+              <button
+                onClick={() => deleteTask(task._id)}
+                className="bg-red-500 text-white px-2 rounded"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
+
     </div>
   );
 }
