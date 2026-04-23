@@ -15,7 +15,9 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/tasks",taskRoutes);
 app.use("/auth",authRoutes);
 
-
+app.use((req, res) => {
+  res.sendFile(require("path").join(__dirname, "public", "index.html"));
+});
 
 mongoose.connect(process.env.MONGO_URL)
   .then(() => {
@@ -24,6 +26,3 @@ mongoose.connect(process.env.MONGO_URL)
   })
   .catch(err => console.log(err));
 
-app.use((req, res) => {
-  res.sendFile(require("path").join(__dirname, "public", "index.html"));
-});

@@ -17,7 +17,7 @@ function Dashboard() {
     if (!token) return (window.location.href = "/login");
 
     axios.get("/tasks", {
-      headers: { Authorization: token }
+      headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => setTasks(res.data))
       .catch(() => alert("Failed to fetch tasks"));
@@ -32,7 +32,7 @@ function Dashboard() {
       const res = await axios.post(
         "/tasks",
         { title },
-        { headers: { Authorization: token } }
+        {headers: { Authorization: `Bearer ${token}` } }
       );
 
       setTasks([...tasks, res.data]);
@@ -47,7 +47,7 @@ function Dashboard() {
     try {
       await axios.delete(
         `/tasks/${id}`,
-        { headers: { Authorization: token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       setTasks(tasks.filter(t => t._id !== id));
@@ -62,7 +62,7 @@ function Dashboard() {
       const res = await axios.put(
         `/tasks/${task._id}`,
         { completed: !task.completed },
-        { headers: { Authorization: token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       setTasks(tasks.map(t =>
