@@ -7,7 +7,7 @@ function Signup() {
 
   const handleSignup = async () => {
     try {
-      await axios.post("http://localhost:5000/auth/signup", {
+      await axios.post("/auth/signup", {
         email,
         password
       });

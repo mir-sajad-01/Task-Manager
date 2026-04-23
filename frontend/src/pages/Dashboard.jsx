@@ -16,7 +16,7 @@ function Dashboard() {
   useEffect(() => {
     if (!token) return (window.location.href = "/login");
 
-    axios.get("http://localhost:5000/tasks", {
+    axios.get("/tasks", {
       headers: { Authorization: token }
     })
       .then(res => setTasks(res.data))
@@ -30,7 +30,7 @@ function Dashboard() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/tasks",
+        "/tasks",
         { title },
         { headers: { Authorization: token } }
       );
@@ -46,7 +46,7 @@ function Dashboard() {
   const deleteTask = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:5000/tasks/${id}`,
+        `/tasks/${id}`,
         { headers: { Authorization: token } }
       );
 
@@ -60,7 +60,7 @@ function Dashboard() {
   const toggleComplete = async (task) => {
     try {
       const res = await axios.put(
-        `http://localhost:5000/tasks/${task._id}`,
+        `/tasks/${task._id}`,
         { completed: !task.completed },
         { headers: { Authorization: token } }
       );
@@ -153,7 +153,7 @@ function Dashboard() {
         <button
           onClick={async () => {
             await axios.put(
-              "http://localhost:5000/tasks/mark-all",
+              "/tasks/mark-all",
               {},
               { headers: { Authorization: token } }
             );
@@ -183,7 +183,7 @@ function Dashboard() {
                 <button
                   onClick={async () => {
                     const res = await axios.put(
-                      `http://localhost:5000/tasks/${task._id}`,
+                      `/tasks/${task._id}`,
                       { title: editText },
                       { headers: { Authorization: token } }
                     );
