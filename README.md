@@ -47,18 +47,48 @@ This project demonstrates **full-stack development using Node.js, Express, Mongo
 ## 🧱 Project Structure
 
 ```
-Task-Manager/
-│
-├── frontend/          # React App (Vite)
-│   └── dist/          # Production build
+task-manager/
 │
 ├── backend/
-│   ├── models/        # Mongoose schemas
-│   ├── routes/        # API routes
-│   ├── middleware/    # Auth middleware
-│   ├── public/        # Frontend build served here
-│   └── server.js      # Main server file
-```
+│   ├── controllers/
+│   │   └── ...
+│   ├── middleware/
+│   │   └── authMiddleware.js
+│   ├── models/
+│   │   ├── Task.js
+│   │   └── User.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   └── taskRoutes.js
+│   ├── public/              # (optional, can be removed if not used)
+│   │   └── index.html
+│   ├── .env
+│   ├── package.json
+│   ├── package-lock.json
+│   └── server.js
+│
+├── frontend/
+│   ├── dist/
+│   ├── public/
+│   │   ├── favicon.svg
+│   │   └── icons.svg
+│   ├── src/
+│   │   ├── pages/
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Login.jsx
+│   │   │   └── Signup.jsx
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   └── postcss.config.js
+│
+├── .gitignore
+└── README.md
 
 ---
 
