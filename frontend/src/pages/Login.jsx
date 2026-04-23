@@ -12,7 +12,8 @@ function Login() {
         password
       });
 
-     localStorage.setItem("token", `Bearer ${res.data.token}`);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
       alert("Login successful");
 

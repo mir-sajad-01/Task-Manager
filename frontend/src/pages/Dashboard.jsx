@@ -10,6 +10,7 @@ function Dashboard() {
   const [editText, setEditText] = useState("");
 
   const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
 
   // ✅ FETCH TASKS
   useEffect(() => {
@@ -89,11 +90,16 @@ function Dashboard() {
   const pending = total - completed;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gray-100 p-6 w-full">
 
       {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Task Manager</h1>
+        <div>
+          <h1 className="text-3xl font-bold">Task Manager</h1>
+          <p className="text-sm text-gray-600">
+            Welcome, {user?.email}
+          </p>
+        </div>
 
         <button
           onClick={() => {
